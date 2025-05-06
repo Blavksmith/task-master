@@ -1,17 +1,19 @@
 import { header } from "framer-motion/client";
 import Link from "next/link";
+import { Button } from "./ui/button";
 
 export default function Navbar() {
   return (
     <header className="container mx-auto px-4 py-4 flex items-center justify-between">
       <div className="flex items-center gap-2">
-        <div className="w-10 h-10 bg-gray-200 rounded-md"></div> // Logo
+        {/* Logo */}
+        <div className="w-10 h-10 bg-gray-200 rounded-md"></div>
         <span className="font-semibold text-xl">TaskMaster</span>
       </div>
 
       <nav className="hidden md:flex items-center gap-8">
         {" "}
-        // hide a nav for mobile breakpoints
+        {/* hide a nav for mobile breakpoints */}
         <Link href="#features" className="text-sm font-medium">
           Features
         </Link>

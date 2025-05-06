@@ -2,28 +2,38 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import FeatureCard from "./components/FeatureCard";
+import FeatureCard from "../components/FeatureCard";
 
 export const features = [
   {
     title: "Set Task Priorities",
     paragraph:
       "Easily prioritize tasks with our intuitive priority system. Mark tasks as high, medium, or low priority to stay focused on what matters most.",
+    firstPath:
+      "m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z",
   },
   {
     title: "Task Tracker",
     paragraph:
       "Monitor task progress in real-time. Track completion rates, time spent, and milestone achievements with detailed insights.",
+    firstPath: "M3 3v18h18",
+    secondPath: "m19 9-5 5-4-4-3 3",
   },
   {
     title: "Notification & Reminder",
     paragraph:
       "Never miss a deadline with smart notifications and customizable reminders for tasks and important updates.",
+    firstPath: "M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9",
+    secondPath: "M10.3 21a1.94 1.94 0 0 0 3.4 0",
   },
   {
     title: "Custom Roles & Permissions",
     paragraph:
       "Define custom roles and set granular permissions to ensure the right people have access to the right features.",
+    firstPath:
+      "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 3a4 4 0 1 0 0.001 8.001A4 4 0 0 0 9 3",
+    secondPath: "M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75",
+    circlePath: ""
   },
 ];
 
@@ -31,31 +41,6 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Navigation */}
-      <header className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-gray-200 rounded-md"></div>
-          <span className="font-semibold text-xl">TaskMaster</span>
-        </div>
-
-        <nav className="hidden md:flex items-center gap-8">
-          <Link href="#features" className="text-sm font-medium">
-            Features
-          </Link>
-          <Link href="#solutions" className="text-sm font-medium">
-            Solutions
-          </Link>
-          <Link href="#resources" className="text-sm font-medium">
-            Resources
-          </Link>
-        </nav>
-
-        <div className="flex items-center gap-4">
-          <Button variant="ghost" className="text-white">
-            Log in
-          </Button>
-          <Button className="bg-indigo-600 hover:bg-indigo-700">Sign Up</Button>
-        </div>
-      </header>
 
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-12">
@@ -168,15 +153,25 @@ export default function Home() {
       </section>
 
       {/* Feature section  */}
-      <section className="bg-white text-black py-16">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <section className="bg-white text-black py-16 space-y-16">
+        <div className="container mx-auto px-14">
+          {/* Feature header */}
+          <div className="text-center space-y-4 mb-12">
+            <h2 className="text-3xl font-bold">Why Choose TaskMaster?</h2>
+            <p className="text-gray-600">
+              Discover the powerful features that make task management a breeze.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {/* Feature 1 - 4 */}
             {features.map((feature, index) => (
               <FeatureCard
                 key={index}
                 title={feature.title}
                 paragraph={feature.paragraph}
+                firstPath={feature.firstPath}
+                secondPath={feature.secondPath || ""}
               ></FeatureCard>
             ))}
 
@@ -185,7 +180,7 @@ export default function Home() {
           </div>
 
           <div className="flex justify-center mt-12">
-            <Button className="bg-indigo-600 hover:bg-indigo-700">
+            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
               Get Started Now
             </Button>
           </div>
