@@ -64,7 +64,7 @@ export default function Home() {
                 <div className="w-6 h-6 bg-gray-400 rounded-full -ml-2"></div>
                 <div className="w-6 h-6 bg-gray-500 rounded-full -ml-2"></div>
               </div>
-              <p>Join 10,000+ teams already using TaskFlow</p>
+              <p>Join 10,000+ teams already using TaskMaster</p>
             </div>
           </div>
 

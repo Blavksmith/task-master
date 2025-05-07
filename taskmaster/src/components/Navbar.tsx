@@ -5,11 +5,12 @@ import { Button } from "./ui/button";
 export default function Navbar() {
   return (
     <header className="container mx-auto px-4 py-4 flex items-center justify-between">
-      <div className="flex items-center gap-2">
+      <Link href="/" className="flex items-center gap-2">
         {/* Logo */}
         <div className="w-10 h-10 bg-gray-200 rounded-md"></div>
+
         <span className="font-semibold text-xl">TaskMaster</span>
-      </div>
+      </Link>
 
       <nav className="hidden md:flex items-center gap-8">
         {" "}
