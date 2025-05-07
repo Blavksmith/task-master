@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,8 +14,51 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ArrowLeft } from "lucide-react";
+import { motion } from "framer-motion";
+import { useState } from "react";
+
+// Komponen AnimatedSelectItem generik untuk semua jenis dropdown
+const AnimatedSelectItem = ({
+  value,
+  display,
+  index,
+}: {
+  value: string;
+  display: React.ReactNode;
+  index: number;
+}) => (
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: index * 0.02 }} // Animasi berurutan
+  >
+    <SelectItem key={value} value={value} className="text-black">
+      {display}
+    </SelectItem>
+  </motion.div>
+);
 
 export default function NewTask() {
+  // State untuk melacak apakah dropdown aktif atau sudah dipilih
+  const [selectedValues, setSelectedValues] = useState({
+    day: "",
+    month: "",
+    year: "",
+    hour: "",
+    minute: "",
+    ampm: "",
+    priority: "",
+    category: "",
+  });
+
+  // Handler untuk mengubah state saat nilai dipilih
+  const handleSelectChange = (field: string, value: string) => {
+    setSelectedValues((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navbar */}
@@ -24,54 +69,89 @@ export default function NewTask() {
           <div className="flex items-center mb-6">
             <Link
               href="/task-tracker"
-              className="text-gray-500 hover:text-gray-700 mr-4"
+              className="text-black hover:text-gray-900 mr-4"
             >
               <ArrowLeft className="h-5 w-5" />
             </Link>
-            <h1 className="text-2xl font-bold text-gray-900">New Task</h1>
+            <h1 className="text-2xl font-bold text-black">New Task</h1>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-lg shadow-md border border-gray-300 p-6">
             <form className="space-y-6">
               {/* Task Name */}
               <div>
-                <Label htmlFor="task-name" className="text-gray-700">
+                <Label
+                  htmlFor="task-name"
+                  className="text-gray-700 font-normal"
+                >
                   Task Name
                 </Label>
                 <Input
                   id="task-name"
                   placeholder="Enter task name"
-                  className="mt-1 w-full text-gray-900"
+                  className="mt-1 w-full text-gray-700 border-gray-300"
                 />
               </div>
 
               {/* Due Date and Time */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="due-date" className="text-gray-700">
+                  <Label
+                    htmlFor="due-date"
+                    className={`${
+                      selectedValues.day ||
+                      selectedValues.month ||
+                      selectedValues.year
+                        ? "text-gray-700"
+                        : "text-black"
+                    } font-normal`}
+                  >
                     Due Date
                   </Label>
                   <div className="grid grid-cols-3 gap-2 mt-1">
-                    <Select>
-                      <SelectTrigger id="day">
+                    <Select
+                      onValueChange={(value) =>
+                        handleSelectChange("day", value)
+                      }
+                    >
+                      <SelectTrigger
+                        id="day"
+                        className={`bg-white ${
+                          selectedValues.day ? "text-gray-700" : "text-gray-400"
+                        } border-gray-300`}
+                      >
                         <SelectValue placeholder="Day" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="transition-transform duration-300 ease-in-out bg-white">
                         {Array.from({ length: 31 }, (_, i) => i + 1).map(
-                          (day) => (
-                            <SelectItem key={day} value={day.toString()}>
-                              {day}
-                            </SelectItem>
+                          (day, index) => (
+                            <AnimatedSelectItem
+                              key={day}
+                              value={day.toString()}
+                              display={day}
+                              index={index}
+                            />
                           )
                         )}
                       </SelectContent>
                     </Select>
 
-                    <Select>
-                      <SelectTrigger id="month">
+                    <Select
+                      onValueChange={(value) =>
+                        handleSelectChange("month", value)
+                      }
+                    >
+                      <SelectTrigger
+                        id="month"
+                        className={`bg-white ${
+                          selectedValues.month
+                            ? "text-gray-700"
+                            : "text-gray-400"
+                        } border-gray-300`}
+                      >
                         <SelectValue placeholder="Month" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="transition-transform duration-300 ease-in-out bg-white">
                         {[
                           "Jan",
                           "Feb",
@@ -86,25 +166,39 @@ export default function NewTask() {
                           "Nov",
                           "Dec",
                         ].map((month, index) => (
-                          <SelectItem
+                          <AnimatedSelectItem
                             key={month}
                             value={(index + 1).toString()}
-                          >
-                            {month}
-                          </SelectItem>
+                            display={month}
+                            index={index}
+                          />
                         ))}
                       </SelectContent>
                     </Select>
 
-                    <Select>
-                      <SelectTrigger id="year">
+                    <Select
+                      onValueChange={(value) =>
+                        handleSelectChange("year", value)
+                      }
+                    >
+                      <SelectTrigger
+                        id="year"
+                        className={`bg-white ${
+                          selectedValues.year
+                            ? "text-gray-700"
+                            : "text-gray-400"
+                        } border-gray-300`}
+                      >
                         <SelectValue placeholder="Year" />
                       </SelectTrigger>
-                      <SelectContent>
-                        {[2023, 2024, 2025, 2026, 2027].map((year) => (
-                          <SelectItem key={year} value={year.toString()}>
-                            {year}
-                          </SelectItem>
+                      <SelectContent className="transition-transform duration-300 ease-in-out bg-white">
+                        {[2023, 2024, 2025, 2026, 2027].map((year, index) => (
+                          <AnimatedSelectItem
+                            key={year}
+                            value={year.toString()}
+                            display={year}
+                            index={index}
+                          />
                         ))}
                       </SelectContent>
                     </Select>
@@ -112,45 +206,99 @@ export default function NewTask() {
                 </div>
 
                 <div>
-                  <Label htmlFor="due-time" className="text-gray-700">
+                  <Label
+                    htmlFor="due-time"
+                    className={`${
+                      selectedValues.hour ||
+                      selectedValues.minute ||
+                      selectedValues.ampm
+                        ? "text-gray-700"
+                        : "text-black"
+                    } font-normal`}
+                  >
                     Due Time
                   </Label>
-                  <div className="grid grid-cols-4 gap-2 mt-1">
-                    <Select>
-                      <SelectTrigger id="hour">
+                  <div className="grid grid-cols-3 gap-4 mt-1">
+                    <Select
+                      onValueChange={(value) =>
+                        handleSelectChange("hour", value)
+                      }
+                    >
+                      <SelectTrigger
+                        id="hour"
+                        className={`bg-white ${
+                          selectedValues.hour
+                            ? "text-gray-700"
+                            : "text-gray-400"
+                        } border-gray-300`}
+                      >
                         <SelectValue placeholder="Hour" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="transition-transform duration-300 ease-in-out bg-white">
                         {Array.from({ length: 12 }, (_, i) => i + 1).map(
-                          (hour) => (
-                            <SelectItem key={hour} value={hour.toString()}>
-                              {hour}
-                            </SelectItem>
+                          (hour, index) => (
+                            <AnimatedSelectItem
+                              key={hour}
+                              value={hour.toString()}
+                              display={hour}
+                              index={index}
+                            />
                           )
                         )}
                       </SelectContent>
                     </Select>
 
-                    <Select>
-                      <SelectTrigger id="minute">
+                    <Select
+                      onValueChange={(value) =>
+                        handleSelectChange("minute", value)
+                      }
+                    >
+                      <SelectTrigger
+                        id="minute"
+                        className={`bg-white ${
+                          selectedValues.minute
+                            ? "text-gray-700"
+                            : "text-gray-400"
+                        } border-gray-300`}
+                      >
                         <SelectValue placeholder="Minutes" />
                       </SelectTrigger>
-                      <SelectContent>
-                        {["00", "15", "30", "45"].map((minute) => (
-                          <SelectItem key={minute} value={minute}>
-                            {minute}
-                          </SelectItem>
+                      <SelectContent className="transition-transform duration-300 ease-in-out bg-white">
+                        {["00", "15", "30", "45"].map((minute, index) => (
+                          <AnimatedSelectItem
+                            key={minute}
+                            value={minute}
+                            display={minute}
+                            index={index}
+                          />
                         ))}
                       </SelectContent>
                     </Select>
 
-                    <Select>
-                      <SelectTrigger id="am-pm">
+                    <Select
+                      onValueChange={(value) =>
+                        handleSelectChange("ampm", value)
+                      }
+                    >
+                      <SelectTrigger
+                        id="am-pm"
+                        className={`bg-white ${
+                          selectedValues.ampm
+                            ? "text-gray-700"
+                            : "text-gray-400"
+                        } border-gray-300`}
+                      >
                         <SelectValue placeholder="AM" />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="am">AM</SelectItem>
-                        <SelectItem value="pm">PM</SelectItem>
+                      <SelectContent className="bg-white transition-transform duration-300 ease-in-out">
+                        {["AM", "PM"].map((period, index) => (
+                          <AnimatedSelectItem
+                            key={period}
+                            value={period.toLowerCase()}
+                            display={period}
+                            index={index}
+                          />
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
@@ -159,58 +307,110 @@ export default function NewTask() {
 
               {/* Task Priority */}
               <div>
-                <Label htmlFor="task-priority" className="text-gray-700">
+                <Label
+                  htmlFor="task-priority"
+                  className={`${
+                    selectedValues.priority ? "text-gray-700" : "text-black"
+                  } font-normal`}
+                >
                   Task Priority
                 </Label>
-                <Select>
-                  <SelectTrigger id="task-priority" className="mt-1 w-full">
+                <Select
+                  onValueChange={(value) =>
+                    handleSelectChange("priority", value)
+                  }
+                >
+                  <SelectTrigger
+                    id="task-priority"
+                    className={`mt-1 w-full bg-white ${
+                      selectedValues.priority
+                        ? "text-gray-700"
+                        : "text-gray-400"
+                    } border-gray-300`}
+                  >
                     <SelectValue placeholder="Please Choose your Task Priority..." />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="high">High</SelectItem>
-                    <SelectItem value="medium">Medium</SelectItem>
-                    <SelectItem value="low">Low</SelectItem>
+                  <SelectContent className="transition-transform duration-300 ease-in-out bg-white">
+                    {["High", "Medium", "Low"].map((priority, index) => (
+                      <AnimatedSelectItem
+                        key={priority}
+                        value={priority.toLowerCase()}
+                        display={priority}
+                        index={index}
+                      />
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
 
               {/* Task Category */}
               <div>
-                <Label htmlFor="task-category" className="text-gray-700">
+                <Label
+                  htmlFor="task-category"
+                  className={`${
+                    selectedValues.category ? "text-gray-700" : "text-black"
+                  } font-normal`}
+                >
                   Task Category
                 </Label>
-                <Select>
-                  <SelectTrigger id="task-category" className="mt-1 w-full">
+                <Select
+                  onValueChange={(value) =>
+                    handleSelectChange("category", value)
+                  }
+                >
+                  <SelectTrigger
+                    id="task-category"
+                    className={`mt-1 w-full bg-white ${
+                      selectedValues.category
+                        ? "text-gray-700"
+                        : "text-gray-400"
+                    } border-gray-300`}
+                  >
                     <SelectValue placeholder="Please Choose your Task Category..." />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="development">Development</SelectItem>
-                    <SelectItem value="design">Design</SelectItem>
-                    <SelectItem value="research">Research</SelectItem>
-                    <SelectItem value="documentation">Documentation</SelectItem>
-                    <SelectItem value="testing">Testing</SelectItem>
+                  <SelectContent className="bg-white transition-transform duration-300 ease-in-out">
+                    {[
+                      "Development",
+                      "Design",
+                      "Research",
+                      "Documentation",
+                      "Testing",
+                    ].map((category, index) => (
+                      <AnimatedSelectItem
+                        key={category}
+                        value={category.toLowerCase()}
+                        display={category}
+                        index={index}
+                      />
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
 
               {/* Task Description */}
               <div>
-                <Label htmlFor="task-description" className="text-gray-700">
+                <Label
+                  htmlFor="task-description"
+                  className="text-black font-normal"
+                >
                   Task Description
                 </Label>
                 <Textarea
                   id="task-description"
                   placeholder="Enter task description"
-                  className="mt-1 w-full h-32"
+                  className="mt-1 w-full h-32 text-black border-gray-300"
                 />
               </div>
 
               {/* Confirmation Checkbox */}
               <div className="flex items-center space-x-2">
-                <Checkbox id="confirm" />
+                <Checkbox
+                  id="confirm"
+                  className="border-gray-300 text-gray-700"
+                />
                 <label
                   htmlFor="confirm"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="text-gray-700 text-sm font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   I'm sure this task is Correct
                 </label>
@@ -219,7 +419,7 @@ export default function NewTask() {
               {/* Submit Button */}
               <Button
                 type="submit"
-                className="w-full bg-gray-700 hover:bg-gray-800"
+                className="w-full bg-gray-800 hover:bg-black text-white"
               >
                 Save Task
               </Button>

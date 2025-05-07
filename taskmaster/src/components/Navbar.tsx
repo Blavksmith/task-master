@@ -1,13 +1,21 @@
 import { header } from "framer-motion/client";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import Image from "next/image";
 
 export default function Navbar() {
   return (
     <header className="container mx-auto px-4 py-4 flex items-center justify-between">
       <Link href="/" className="flex items-center gap-2">
         {/* Logo */}
-        <div className="w-10 h-10 bg-gray-200 rounded-md"></div>
+        <div className="w-10 h-10 bg-gray-200 rounded-md overflow-hidden">
+          <Image
+            src=""
+            width={500}
+            height={500}
+            alt="Picture of the author"
+          />
+        </div>
 
         <span className="font-semibold text-xl">TaskMaster</span>
       </Link>
@@ -27,12 +35,12 @@ export default function Navbar() {
       </nav>
 
       <div className="flex items-center gap-4">
-        <Button variant="ghost" className="text-white">
+        <Button variant="ghost" className="text-white cursor-pointer">
           Login
         </Button>
         <Button
           variant="ghost"
-          className="bg-indigo-500 hover:bg-indigo-600 text-white"
+          className="bg-indigo-500 hover:bg-indigo-600 text-white cursor-pointer"
         >
           Sign Up
         </Button>

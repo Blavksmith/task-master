@@ -15,7 +15,7 @@ function TaskTracker() {
           <div className="flex items-center justify-between mb-8">
             <h1 className="text-2xl font-bold text-gray-900">Task Tracker</h1>
             <Link href="/task-tracker/new-task">
-              <Button className="bg-indigo-500 bg:indigo-600">
+              <Button className="bg-indigo-500 bg:indigo-600 cursor-pointer">
                 <PlusIcon className="h-4 w-4 mr-2" />
                 <span>Add Task</span>
               </Button>
