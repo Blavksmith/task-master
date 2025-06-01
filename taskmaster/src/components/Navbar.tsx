@@ -10,9 +10,9 @@ export default function Navbar() {
         {/* Logo */}
         <div className="w-10 h-10 bg-gray-200 rounded-md overflow-hidden">
           <Image
-            src=""
-            width={500}
-            height={500}
+            src="/assets/2.png"
+            width={600}
+            height={600}
             alt="Picture of the author"
           />
         </div>

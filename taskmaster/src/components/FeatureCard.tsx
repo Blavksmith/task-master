@@ -2,7 +2,7 @@ export default function FeatureCard({
   title,
   paragraph,
   firstPath,
-  secondPath
+  secondPath,
 }: {
   title: string;
   paragraph: string;
@@ -14,7 +14,7 @@ export default function FeatureCard({
       <div className="w-10 h-10 bg-blue-100 rounded-md flex items-center justify-center mb-4">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="24"
+          width="sdx24"
           height="24"
           viewBox="0 0 24 24"
           fill="none"
@@ -27,7 +27,6 @@ export default function FeatureCard({
           <path d={firstPath} />
 
           {secondPath && <path d={secondPath} />}
-      
         </svg>
       </div>
       <h3 className="text-lg font-semibold mb-2">{title}</h3>
@@ -35,3 +34,4 @@ export default function FeatureCard({
     </div>
   );
 }
+

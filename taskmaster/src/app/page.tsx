@@ -43,7 +43,7 @@ export default function Home() {
       {/* Navigation */}
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-12">
+      <section className="container mx-auto px-10 py-12">
         <div className="grid md:grid-cols-2 gap-8 items-center">
           {/* Left Column */}
           <div className="space-y-8">
@@ -55,7 +55,7 @@ export default function Home() {
               confidence
             </h1>
             <div className="w-16 h-1 bg-gray-600"></div>
-            <Button className="bg-indigo-600 hover:bg-indigo-700">
+            <Button className="bg-indigo-600 hover:bg-indigo-700 cursor-pointer">
               Start for free
             </Button>
             <div className="flex items-center gap-2 text-sm text-gray-400">
@@ -180,7 +180,7 @@ export default function Home() {
           </div>
 
           <div className="flex justify-center mt-12">
-            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
+            <Button className="bg-indigo-600 hover:bg-indigo-700 cursor-pointer text-white">
               Get Started Now
             </Button>
           </div>

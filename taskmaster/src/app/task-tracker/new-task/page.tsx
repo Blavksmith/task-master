@@ -17,7 +17,6 @@ import { ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
-// Komponen AnimatedSelectItem generik untuk semua jenis dropdown
 const AnimatedSelectItem = ({
   value,
   display,
@@ -30,7 +29,7 @@ const AnimatedSelectItem = ({
   <motion.div
     initial={{ opacity: 0, y: 10 }}
     animate={{ opacity: 1, y: 0 }}
-    transition={{ delay: index * 0.02 }} // Animasi berurutan
+    transition={{ delay: index * 0.02 }}
   >
     <SelectItem key={value} value={value} className="text-black">
       {display}
@@ -39,7 +38,6 @@ const AnimatedSelectItem = ({
 );
 
 export default function NewTask() {
-  // State untuk melacak apakah dropdown aktif atau sudah dipilih
   const [selectedValues, setSelectedValues] = useState({
     day: "",
     month: "",
@@ -51,7 +49,6 @@ export default function NewTask() {
     category: "",
   });
 
-  // Handler untuk mengubah state saat nilai dipilih
   const handleSelectChange = (field: string, value: string) => {
     setSelectedValues((prev) => ({
       ...prev,
@@ -64,7 +61,7 @@ export default function NewTask() {
       {/* Navbar */}
 
       {/* New Task Form */}
-      <div className="container mx-auto px-4 py-10">
+      <div className="container mx-auto px-10 py-10">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center mb-6">
             <Link
@@ -419,7 +416,7 @@ export default function NewTask() {
               {/* Submit Button */}
               <Button
                 type="submit"
-                className="w-full bg-gray-800 hover:bg-black text-white"
+                className="w-full bg-gray-800 hover:bg-black text-white cursor-pointer"
               >
                 Save Task
               </Button>

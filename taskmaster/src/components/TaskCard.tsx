@@ -12,6 +12,8 @@ function TaskCard({ title }: { title: string }) {
           </Badge>
         </div>
 
+        
+
         <div className="p-4 space-y-8">
           {/* Task Card */}
           <div className="border border-gray-200 rounded-lg p-4 bg-white shadow-sm">
