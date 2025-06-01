@@ -11,7 +11,7 @@ function TaskTracker() {
         {/* Nav */}
 
         {/* Task Tracker Header */}
-        <div className="container mx-auto px-10 py-10">
+        <div className="container mx-auto px-8 py-10">
           <div className="flex items-center justify-between mb-8">
             <h1 className="text-2xl font-bold text-gray-900">Task Tracker</h1>
             <Link href="/task-tracker/new-task">

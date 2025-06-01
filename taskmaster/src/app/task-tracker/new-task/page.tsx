@@ -61,7 +61,7 @@ export default function NewTask() {
       {/* Navbar */}
 
       {/* New Task Form */}
-      <div className="container mx-auto px-10 py-10">
+      <div className="container mx-auto px-8 py-10">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center mb-6">
             <Link

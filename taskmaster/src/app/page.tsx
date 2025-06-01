@@ -43,7 +43,7 @@ export default function Home() {
       {/* Navigation */}
 
       {/* Hero Section */}
-      <section className="container mx-auto px-10 py-12">
+      <section className="container mx-auto px-8 py-12">
         <div className="grid md:grid-cols-2 gap-8 items-center">
           {/* Left Column */}
           <div className="space-y-8">
