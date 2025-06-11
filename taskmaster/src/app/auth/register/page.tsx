@@ -1,11 +1,25 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
+"use client";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+
+import { useState } from "react";
+import { supabase } from "@/lib/supabaseClient";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
+  const router = useRouter();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-md">
@@ -20,7 +34,9 @@ export default function RegisterPage() {
         {/* Register Card */}
         <Card className="border-0 shadow-lg">
           <CardHeader className="text-center pb-6">
-            <CardTitle className="text-2xl font-bold text-gray-900">Create account</CardTitle>
+            <CardTitle className="text-2xl font-bold text-gray-900">
+              Create account
+            </CardTitle>
             <p className="text-gray-600 mt-2">Get started with TaskMaster</p>
           </CardHeader>
           <CardContent className="px-8 pb-8">
@@ -28,7 +44,10 @@ export default function RegisterPage() {
               {/* Name Fields */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName" className="text-gray-700 font-medium">
+                  <Label
+                    htmlFor="firstName"
+                    className="text-gray-700 font-medium"
+                  >
                     First name
                   </Label>
                   <Input
@@ -40,7 +59,10 @@ export default function RegisterPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lastName" className="text-gray-700 font-medium">
+                  <Label
+                    htmlFor="lastName"
+                    className="text-gray-700 font-medium"
+                  >
                     Last name
                   </Label>
                   <Input
@@ -83,7 +105,10 @@ export default function RegisterPage() {
 
               {/* Confirm Password Field */}
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword" className="text-gray-700 font-medium">
+                <Label
+                  htmlFor="confirmPassword"
+                  className="text-gray-700 font-medium"
+                >
                   Confirm password
                 </Label>
                 <Input
@@ -98,27 +123,42 @@ export default function RegisterPage() {
               {/* Terms and Conditions */}
               <div className="flex items-start space-x-2 pt-2">
                 <Checkbox id="terms" className="mt-1" />
-                <Label htmlFor="terms" className="text-sm text-gray-600 leading-5">
+                <Label
+                  htmlFor="terms"
+                  className="text-sm text-gray-600 leading-5"
+                >
                   I agree to the{" "}
-                  <Link href="#" className="text-indigo-600 hover:text-indigo-500">
+                  <Link
+                    href="#"
+                    className="text-indigo-600 hover:text-indigo-500"
+                  >
                     Terms of Service
                   </Link>{" "}
                   and{" "}
-                  <Link href="#" className="text-indigo-600 hover:text-indigo-500">
+                  <Link
+                    href="#"
+                    className="text-indigo-600 hover:text-indigo-500"
+                  >
                     Privacy Policy
                   </Link>
                 </Label>
               </div>
 
               {/* Create Account Button */}
-              <Button type="submit" className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white font-medium">
+              <Button
+                type="submit"
+                className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white font-medium"
+              >
                 Create account
               </Button>
 
               {/* Sign In Link */}
               <div className="text-center pt-4">
                 <span className="text-gray-600">Already have an account? </span>
-                <Link href="/auth/login" className="text-indigo-600 hover:text-indigo-500 font-medium">
+                <Link
+                  href="/auth/login"
+                  className="text-indigo-600 hover:text-indigo-500 font-medium"
+                >
                   Sign in
                 </Link>
               </div>
@@ -127,5 +167,5 @@ export default function RegisterPage() {
         </Card>
       </div>
     </div>
-  )
+  );
 }
