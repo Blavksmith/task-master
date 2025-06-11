@@ -58,11 +58,10 @@ function Dashboard() {
                   </Avatar>
                   <div className="flex-1">
                     <p className="text-sm text-gray-600 font-semibold">
-                      Sarah Chen completed a task
+                      daud completed a task
                     </p>
                     <p className="text-xs text-gray-500">2 hours ago</p>
                   </div>
-                  
                 </div>
               </CardContent>
             </Card>
@@ -70,7 +69,9 @@ function Dashboard() {
             {/* Progress card */}
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-gray-900">Project Progress</CardTitle>
+                <CardTitle className="text-gray-900">
+                  Project Progress
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
@@ -82,7 +83,10 @@ function Dashboard() {
                       75%
                     </span>
                   </div>
-                  <Progress value={70} className="bg-gray-200 [&>div]:bg-lime-500 h-2" />
+                  <Progress
+                    value={70}
+                    className="bg-gray-200 [&>div]:bg-lime-500 h-2"
+                  />
                 </div>
               </CardContent>
             </Card>
@@ -112,17 +116,17 @@ function Dashboard() {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <Badge variant="outline" className="text-xs">
+                  <Badge variant="outline" className="text-xs text-gray-600">
                     design
                   </Badge>
-                  <Badge variant="outline" className="text-xs">
+                  <Badge variant="outline" className="text-xs text-gray-600">
                     ui
                   </Badge>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Task 2 */}
+            {/* task 2 */}
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
@@ -145,7 +149,7 @@ function Dashboard() {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <Badge variant="outline" className="text-xs">
+                  <Badge variant="outline" className="text-xs text-gray-600">
                     documentation
                   </Badge>
                 </div>

@@ -1,9 +1,20 @@
+"use client";
+
 import { header } from "framer-motion/client";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { use } from "react";
 
 export default function Navbar() {
+  const pathName = usePathname();
+  const hiddenPaths = ["/auth/login", "/auth/register", "/auth/forgot-password"];
+
+  if (hiddenPaths.includes(pathName)) {
+    return null; // to hide a nav 
+  }
+
   return (
     <header className="container mx-auto px-4 py-4 flex items-center justify-between">
       <Link href="/" className="flex items-center gap-2">

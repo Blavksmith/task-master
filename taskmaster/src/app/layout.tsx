@@ -1,7 +1,7 @@
 import type React from "react";
 import "@/app/globals.css";
 import { Inter } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "../components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -16,6 +16,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -25,8 +26,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* Header and Navbar */}
-          <Navbar />
+          {/* header and navbar */}
+          <Navbar/>
 
           {children}
         </ThemeProvider>
