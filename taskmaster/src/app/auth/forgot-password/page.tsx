@@ -1,11 +1,40 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowLeft } from "lucide-react"
+"use client";
+
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowLeft } from "lucide-react";
+
+import { useState } from "react";
+import { supabase } from "@/lib/supabaseClient";
+import { toast } from "sonner";
 
 export default function ForgotPasswordPage() {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    setLoading(true);
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/auth/reset-password`,
+    });
+
+    setLoading(false);
+
+    if (error) {
+      toast.error("Failed to send reset link", { description: error.message });
+    } else {
+      toast.success("Reset link sent to your email", {
+        description: "Please check your inbox.",
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
@@ -20,12 +49,16 @@ export default function ForgotPasswordPage() {
         {/* Forgot Password Card */}
         <Card className="border-0 shadow-lg">
           <CardHeader className="text-center pb-6">
-            <CardTitle className="text-2xl font-bold text-gray-900">Reset password</CardTitle>
-            <p className="text-gray-600 mt-2">Enter your email to receive a reset link</p>
+            <CardTitle className="text-2xl font-bold text-gray-900">
+              Reset password
+            </CardTitle>
+            <p className="text-gray-600 mt-2">
+              Enter your email to receive a reset link
+            </p>
           </CardHeader>
           <CardContent className="px-8 pb-8">
-            <form className="space-y-6">
-              {/* Email Field */}
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              {/* email Field */}
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-gray-700 font-medium">
                   Email
@@ -35,13 +68,19 @@ export default function ForgotPasswordPage() {
                   type="email"
                   placeholder="Enter your email"
                   className="h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
 
               {/* Send Reset Link Button */}
-              <Button type="submit" className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white font-medium">
-                Send reset link
+              <Button
+                type="submit"
+                className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white font-medium"
+                disabled={loading}
+              >
+                {loading ? "Sending..." : "Send Reset Link"}
               </Button>
 
               {/* Back to Login */}
@@ -59,5 +98,5 @@ export default function ForgotPasswordPage() {
         </Card>
       </div>
     </div>
-  )
+  );
 }

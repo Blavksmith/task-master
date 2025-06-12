@@ -19,6 +19,31 @@ export default function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+        },
+      },
+    });
+
+    if (error) {
+      setError(error.message);
+    } else {
+      router.push("/auth/login");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-8">
@@ -40,7 +65,7 @@ export default function RegisterPage() {
             <p className="text-gray-600 mt-2">Get started with TaskMaster</p>
           </CardHeader>
           <CardContent className="px-8 pb-8">
-            <form className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-5">
               {/* Name Fields */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -53,11 +78,15 @@ export default function RegisterPage() {
                   <Input
                     id="firstName"
                     type="text"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
                     placeholder="John"
                     className="h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
                     required
                   />
                 </div>
+
+                {/* last name field */}
                 <div className="space-y-2">
                   <Label
                     htmlFor="lastName"
@@ -68,6 +97,8 @@ export default function RegisterPage() {
                   <Input
                     id="lastName"
                     type="text"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
                     placeholder="Doe"
                     className="h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
                     required
@@ -83,6 +114,8 @@ export default function RegisterPage() {
                 <Input
                   id="email"
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="john@example.com"
                   className="h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
                   required
@@ -97,6 +130,8 @@ export default function RegisterPage() {
                 <Input
                   id="password"
                   type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="Create a password"
                   className="h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
                   required
@@ -114,6 +149,8 @@ export default function RegisterPage() {
                 <Input
                   id="confirmPassword"
                   type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm your password"
                   className="h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
                   required
@@ -143,6 +180,9 @@ export default function RegisterPage() {
                   </Link>
                 </Label>
               </div>
+
+              {/* error message */}
+              {error && <p className="text-sm text-red-500">{error}</p>}
 
               {/* Create Account Button */}
               <Button

@@ -1,6 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import React from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabaseClient";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,7 +21,6 @@ import {
 } from "@/components/ui/select";
 import { ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
-import { useState } from "react";
 
 const AnimatedSelectItem = ({
   value,
@@ -38,19 +43,137 @@ const AnimatedSelectItem = ({
 );
 
 export default function NewTask() {
-  const [selectedValues, setSelectedValues] = useState({
+  const router = useRouter();
+  const [userId, setUserId] = useState<string | null>(null);
+  const [form, setForm] = useState({
+    title: "",
+    description: "",
+    priority: "",
     day: "",
     month: "",
     year: "",
     hour: "",
     minute: "",
     ampm: "",
-    priority: "",
-    category: "",
   });
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const initializeUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        // Check if user exists in users table, if not create one
+        const { data: existingUser, error: fetchError } = await supabase
+          .from('users')
+          .select('id')
+          .eq('id', user.id)
+          .single();
+
+        if (fetchError && fetchError.code === 'PGRST116') {
+          // User doesn't exist in users table, create one
+          const { error: insertError } = await supabase
+            .from('users')
+            .insert([
+              {
+                id: user.id,
+                full_name: user.user_metadata?.full_name || user.email || 'Unknown User',
+                avatar_url: user.user_metadata?.avatar_url || null,
+              }
+            ]);
+
+          if (insertError) {
+            console.error('Error creating user profile:', insertError);
+            toast.error('Failed to create user profile');
+            return;
+          }
+        }
+
+        setUserId(user.id);
+      }
+    };
+
+    initializeUser();
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSelect = (name: string, value: string) => {
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!userId) {
+      return toast.error("You must be logged in to create a task!!");
+    }
+
+    setLoading(true);
+    
+    try {
+      let due_date = null;
+      if (
+        form.day &&
+        form.month &&
+        form.year &&
+        form.hour &&
+        form.minute &&
+        form.ampm
+      ) {
+        const hour12 = parseInt(form.hour);
+        const hour24 =
+          form.ampm === "pm" && hour12 < 12
+            ? hour12 + 12
+            : hour12 === 12 && form.ampm === "am"
+            ? 0
+            : hour12;
+        due_date = new Date(
+          Number(form.year),
+          Number(form.month) - 1,
+          Number(form.day),
+          hour24,
+          Number(form.minute)
+        );
+      }
+
+      const { data, error } = await supabase.from("tasks").insert([
+        {
+          title: form.title,
+          description: form.description,
+          priority: form.priority,
+          status: "todo",
+          assignee_id: userId,
+          due_date: due_date,
+          project_id: null, // Set to null since we're not using projects yet
+        },
+      ]);
+
+      if (error) {
+        console.error("Error creating task:", error);
+        toast.error("Failed to create task: " + error.message);
+      } else {
+        toast.success("Task created successfully!");
+        router.push("/task-tracker");
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      toast.error("An unexpected error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSelectChange = (field: string, value: string) => {
-    setSelectedValues((prev) => ({
+    setForm((prev) => ({
       ...prev,
       [field]: value,
     }));
@@ -74,7 +197,7 @@ export default function NewTask() {
           </div>
 
           <div className="bg-white rounded-lg shadow-md border border-gray-300 p-6">
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={handleSubmit}>
               {/* Task Name */}
               <div>
                 <Label
@@ -85,8 +208,11 @@ export default function NewTask() {
                 </Label>
                 <Input
                   id="task-name"
+                  name="title"
                   placeholder="Enter task name"
                   className="mt-1 w-full text-gray-700 border-gray-300"
+                  onChange={handleChange}
+                  value={form.title}
                 />
               </div>
 
@@ -96,9 +222,7 @@ export default function NewTask() {
                   <Label
                     htmlFor="due-date"
                     className={`${
-                      selectedValues.day ||
-                      selectedValues.month ||
-                      selectedValues.year
+                      form.day || form.month || form.year
                         ? "text-gray-700"
                         : "text-black"
                     } font-normal`}
@@ -106,6 +230,7 @@ export default function NewTask() {
                     Due Date
                   </Label>
                   <div className="grid grid-cols-3 gap-2 mt-1">
+                    {/* Day */}
                     <Select
                       onValueChange={(value) =>
                         handleSelectChange("day", value)
@@ -114,7 +239,7 @@ export default function NewTask() {
                       <SelectTrigger
                         id="day"
                         className={`bg-white ${
-                          selectedValues.day ? "text-gray-700" : "text-gray-400"
+                          form.day ? "text-gray-700" : "text-gray-400"
                         } border-gray-300`}
                       >
                         <SelectValue placeholder="Day" />
@@ -141,7 +266,7 @@ export default function NewTask() {
                       <SelectTrigger
                         id="month"
                         className={`bg-white ${
-                          selectedValues.month
+                          form.month
                             ? "text-gray-700"
                             : "text-gray-400"
                         } border-gray-300`}
@@ -181,7 +306,7 @@ export default function NewTask() {
                       <SelectTrigger
                         id="year"
                         className={`bg-white ${
-                          selectedValues.year
+                          form.year
                             ? "text-gray-700"
                             : "text-gray-400"
                         } border-gray-300`}
@@ -206,9 +331,9 @@ export default function NewTask() {
                   <Label
                     htmlFor="due-time"
                     className={`${
-                      selectedValues.hour ||
-                      selectedValues.minute ||
-                      selectedValues.ampm
+                      form.hour ||
+                      form.minute ||
+                      form.ampm
                         ? "text-gray-700"
                         : "text-black"
                     } font-normal`}
@@ -224,7 +349,7 @@ export default function NewTask() {
                       <SelectTrigger
                         id="hour"
                         className={`bg-white ${
-                          selectedValues.hour
+                          form.hour
                             ? "text-gray-700"
                             : "text-gray-400"
                         } border-gray-300`}
@@ -253,7 +378,7 @@ export default function NewTask() {
                       <SelectTrigger
                         id="minute"
                         className={`bg-white ${
-                          selectedValues.minute
+                          form.minute
                             ? "text-gray-700"
                             : "text-gray-400"
                         } border-gray-300`}
@@ -280,7 +405,7 @@ export default function NewTask() {
                       <SelectTrigger
                         id="am-pm"
                         className={`bg-white ${
-                          selectedValues.ampm
+                          form.ampm
                             ? "text-gray-700"
                             : "text-gray-400"
                         } border-gray-300`}
@@ -307,7 +432,7 @@ export default function NewTask() {
                 <Label
                   htmlFor="task-priority"
                   className={`${
-                    selectedValues.priority ? "text-gray-700" : "text-black"
+                    form.priority ? "text-gray-700" : "text-black"
                   } font-normal`}
                 >
                   Task Priority
@@ -320,7 +445,7 @@ export default function NewTask() {
                   <SelectTrigger
                     id="task-priority"
                     className={`mt-1 w-full bg-white ${
-                      selectedValues.priority
+                      form.priority
                         ? "text-gray-700"
                         : "text-gray-400"
                     } border-gray-300`}
@@ -340,50 +465,6 @@ export default function NewTask() {
                 </Select>
               </div>
 
-              {/* Task Category */}
-              <div>
-                <Label
-                  htmlFor="task-category"
-                  className={`${
-                    selectedValues.category ? "text-gray-700" : "text-black"
-                  } font-normal`}
-                >
-                  Task Category
-                </Label>
-                <Select
-                  onValueChange={(value) =>
-                    handleSelectChange("category", value)
-                  }
-                >
-                  <SelectTrigger
-                    id="task-category"
-                    className={`mt-1 w-full bg-white ${
-                      selectedValues.category
-                        ? "text-gray-700"
-                        : "text-gray-400"
-                    } border-gray-300`}
-                  >
-                    <SelectValue placeholder="Please Choose your Task Category..." />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white transition-transform duration-300 ease-in-out">
-                    {[
-                      "Development",
-                      "Design",
-                      "Research",
-                      "Documentation",
-                      "Testing",
-                    ].map((category, index) => (
-                      <AnimatedSelectItem
-                        key={category}
-                        value={category.toLowerCase()}
-                        display={category}
-                        index={index}
-                      />
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
               {/* Task Description */}
               <div>
                 <Label
@@ -394,8 +475,11 @@ export default function NewTask() {
                 </Label>
                 <Textarea
                   id="task-description"
+                  name="description"
                   placeholder="Enter task description"
                   className="mt-1 w-full h-32 text-black border-gray-300"
+                  value={form.description}
+                  onChange={handleChange}
                 />
               </div>
 
@@ -417,6 +501,7 @@ export default function NewTask() {
               <Button
                 type="submit"
                 className="w-full bg-gray-800 hover:bg-black text-white cursor-pointer"
+                disabled={loading}
               >
                 Save Task
               </Button>
