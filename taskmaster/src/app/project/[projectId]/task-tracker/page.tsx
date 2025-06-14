@@ -5,6 +5,8 @@ import { PlusIcon } from "lucide-react";
 import TaskCard from "@/components/TaskCard";
 
 function TaskTracker() {
+
+
   return (
     <div>
       <div className="min-h-screen bg-gray-50">
@@ -14,7 +16,7 @@ function TaskTracker() {
         <div className="container mx-auto px-8 py-10">
           <div className="flex items-center justify-between mb-8">
             <h1 className="text-2xl font-bold text-gray-900">Task Tracker</h1>
-            <Link href="/task-tracker/new-task">
+            <Link href="../">
               <Button className="bg-indigo-500 bg:indigo-600 cursor-pointer">
                 <PlusIcon className="h-4 w-4 mr-2" />
                 <span>Add Task</span>
@@ -33,8 +35,6 @@ function TaskTracker() {
             {/* Done */}
             <TaskCard title="Done" />
           </div>
-
-
         </div>
       </div>
     </div>

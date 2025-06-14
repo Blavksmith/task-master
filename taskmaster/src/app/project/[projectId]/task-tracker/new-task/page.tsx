@@ -45,10 +45,12 @@ const AnimatedSelectItem = ({
 export default function NewTask() {
   const router = useRouter();
   const [userId, setUserId] = useState<string | null>(null);
+  const [projects, setProjects] = useState<Array<{id: string, name: string}>>([]);
   const [form, setForm] = useState({
     title: "",
     description: "",
-    priority: "",
+    priority: "medium", // Set default to match database default
+    project_id: "",
     day: "",
     month: "",
     year: "",
@@ -57,6 +59,7 @@ export default function NewTask() {
     ampm: "",
   });
   const [loading, setLoading] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
 
   useEffect(() => {
     const initializeUser = async () => {
@@ -89,6 +92,16 @@ export default function NewTask() {
         }
 
         setUserId(user.id);
+        
+        // Fetch user's projects
+        const { data: projectsData, error: projectsError } = await supabase
+          .from('projects')
+          .select('id, name')
+          .eq('owner_id', user.id);
+          
+        if (!projectsError && projectsData) {
+          setProjects(projectsData);
+        }
       }
     };
 
@@ -103,10 +116,10 @@ export default function NewTask() {
     }));
   };
 
-  const handleSelect = (name: string, value: string) => {
+  const handleSelectChange = (field: string, value: string) => {
     setForm((prev) => ({
       ...prev,
-      [name]: value,
+      [field]: value,
     }));
   };
 
@@ -114,7 +127,15 @@ export default function NewTask() {
     e.preventDefault();
 
     if (!userId) {
-      return toast.error("You must be logged in to create a task!!");
+      return toast.error("You must be logged in to create a task!");
+    }
+
+    if (!confirmed) {
+      return toast.error("Please confirm that the task details are correct!");
+    }
+
+    if (!form.title.trim()) {
+      return toast.error("Task title is required!");
     }
 
     setLoading(true);
@@ -143,24 +164,46 @@ export default function NewTask() {
           hour24,
           Number(form.minute)
         );
+        
+        // Convert to ISO string for proper database storage
+        due_date = due_date.toISOString();
       }
 
-      const { data, error } = await supabase.from("tasks").insert([
-        {
-          title: form.title,
-          description: form.description,
-          priority: form.priority,
-          status: "todo",
-          assignee_id: userId,
-          due_date: due_date,
-          project_id: null, // Set to null since we're not using projects yet
-        },
-      ]);
+      // Ensure priority has a valid value
+      const validPriority = form.priority || "medium";
+      
+      const taskData = {
+        title: form.title.trim(),
+        description: form.description.trim() || null,
+        priority: validPriority,
+        status: "todo",
+        assignee_id: userId,
+        due_date: due_date,
+        project_id: form.project_id || null,
+      };
+
+      // Debug: log the data being sent
+      console.log("Sending task data:", taskData);
+
+      const { data, error } = await supabase.from("tasks").insert([taskData]).select();
 
       if (error) {
-        console.error("Error creating task:", error);
-        toast.error("Failed to create task: " + error.message);
+        console.error("Detailed error:", error);
+        console.error("Error code:", error.code);
+        console.error("Error message:", error.message);
+        console.error("Error details:", error.details);
+        console.error("Error hint:", error.hint);
+        
+        // More specific error messages
+        if (error.code === '23503') {
+          toast.error("Invalid project or user reference. Please try again.");
+        } else if (error.code === '23514') {
+          toast.error("Invalid priority or status value. Please check your selections.");
+        } else {
+          toast.error(`Failed to create task: ${error.message}`);
+        }
       } else {
+        console.log("Task created successfully:", data);
         toast.success("Task created successfully!");
         router.push("/task-tracker");
       }
@@ -172,23 +215,14 @@ export default function NewTask() {
     }
   };
 
-  const handleSelectChange = (field: string, value: string) => {
-    setForm((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Navbar */}
-
       {/* New Task Form */}
       <div className="container mx-auto px-8 py-10">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center mb-6">
             <Link
-              href="/task-tracker"
+              href="../"
               className="text-black hover:text-gray-900 mr-4"
             >
               <ArrowLeft className="h-5 w-5" />
@@ -204,7 +238,7 @@ export default function NewTask() {
                   htmlFor="task-name"
                   className="text-gray-700 font-normal"
                 >
-                  Task Name
+                  Task Name *
                 </Label>
                 <Input
                   id="task-name"
@@ -213,8 +247,49 @@ export default function NewTask() {
                   className="mt-1 w-full text-gray-700 border-gray-300"
                   onChange={handleChange}
                   value={form.title}
+                  required
                 />
               </div>
+
+              {/* Project Selection */}
+              {projects.length > 0 && (
+                <div>
+                  <Label
+                    htmlFor="project"
+                    className={`${
+                      form.project_id ? "text-gray-700" : "text-black"
+                    } font-normal`}
+                  >
+                    Project (Optional)
+                  </Label>
+                  <Select
+                    onValueChange={(value) =>
+                      handleSelectChange("project_id", value)
+                    }
+                  >
+                    <SelectTrigger
+                      id="project"
+                      className={`mt-1 w-full bg-white ${
+                        form.project_id
+                          ? "text-gray-700"
+                          : "text-gray-400"
+                      } border-gray-300`}
+                    >
+                      <SelectValue placeholder="Select a project (optional)..." />
+                    </SelectTrigger>
+                    <SelectContent className="transition-transform duration-300 ease-in-out bg-white">
+                      {projects.map((project, index) => (
+                        <AnimatedSelectItem
+                          key={project.id}
+                          value={project.id}
+                          display={project.name}
+                          index={index}
+                        />
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
 
               {/* Due Date and Time */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -227,7 +302,7 @@ export default function NewTask() {
                         : "text-black"
                     } font-normal`}
                   >
-                    Due Date
+                    Due Date (Optional)
                   </Label>
                   <div className="grid grid-cols-3 gap-2 mt-1">
                     {/* Day */}
@@ -314,7 +389,7 @@ export default function NewTask() {
                         <SelectValue placeholder="Year" />
                       </SelectTrigger>
                       <SelectContent className="transition-transform duration-300 ease-in-out bg-white">
-                        {[2023, 2024, 2025, 2026, 2027].map((year, index) => (
+                        {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() + i).map((year, index) => (
                           <AnimatedSelectItem
                             key={year}
                             value={year.toString()}
@@ -338,7 +413,7 @@ export default function NewTask() {
                         : "text-black"
                     } font-normal`}
                   >
-                    Due Time
+                    Due Time (Optional)
                   </Label>
                   <div className="grid grid-cols-3 gap-4 mt-1">
                     <Select
@@ -431,9 +506,7 @@ export default function NewTask() {
               <div>
                 <Label
                   htmlFor="task-priority"
-                  className={`${
-                    form.priority ? "text-gray-700" : "text-black"
-                  } font-normal`}
+                  className="text-gray-700 font-normal"
                 >
                   Task Priority
                 </Label>
@@ -441,23 +514,24 @@ export default function NewTask() {
                   onValueChange={(value) =>
                     handleSelectChange("priority", value)
                   }
+                  value={form.priority}
                 >
                   <SelectTrigger
                     id="task-priority"
-                    className={`mt-1 w-full bg-white ${
-                      form.priority
-                        ? "text-gray-700"
-                        : "text-gray-400"
-                    } border-gray-300`}
+                    className="mt-1 w-full bg-white text-gray-700 border-gray-300"
                   >
-                    <SelectValue placeholder="Please Choose your Task Priority..." />
+                    <SelectValue placeholder="Select Task Priority..." />
                   </SelectTrigger>
                   <SelectContent className="transition-transform duration-300 ease-in-out bg-white">
-                    {["High", "Medium", "Low"].map((priority, index) => (
+                    {[
+                      { value: "high", label: "High" },
+                      { value: "medium", label: "Medium" },
+                      { value: "low", label: "Low" }
+                    ].map((priority, index) => (
                       <AnimatedSelectItem
-                        key={priority}
-                        value={priority.toLowerCase()}
-                        display={priority}
+                        key={priority.value}
+                        value={priority.value}
+                        display={priority.label}
                         index={index}
                       />
                     ))}
@@ -471,7 +545,7 @@ export default function NewTask() {
                   htmlFor="task-description"
                   className="text-black font-normal"
                 >
-                  Task Description
+                  Task Description (Optional)
                 </Label>
                 <Textarea
                   id="task-description"
@@ -488,12 +562,14 @@ export default function NewTask() {
                 <Checkbox
                   id="confirm"
                   className="border-gray-300 text-gray-700"
+                  checked={confirmed}
+                  onCheckedChange={(checked) => setConfirmed(checked as boolean)}
                 />
                 <label
                   htmlFor="confirm"
                   className="text-gray-700 text-sm font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  I'm sure this task is Correct
+                  I'm sure this task is correct
                 </label>
               </div>
 
@@ -501,9 +577,9 @@ export default function NewTask() {
               <Button
                 type="submit"
                 className="w-full bg-gray-800 hover:bg-black text-white cursor-pointer"
-                disabled={loading}
+                disabled={loading || !confirmed}
               >
-                Save Task
+                {loading ? "Creating Task..." : "Save Task"}
               </Button>
             </form>
           </div>
