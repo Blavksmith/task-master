@@ -1,0 +1,16 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/auth/set-session/route": "app/auth/set-session/route.js",
+  "/auth/logout/route": "app/auth/logout/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/auth/login/page": "app/auth/login/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/auth/forgot-password/page": "app/auth/forgot-password/page.js",
+  "/auth/register/page": "app/auth/register/page.js",
+  "/project/new/page": "app/project/new/page.js",
+  "/project/page": "app/project/page.js",
+  "/project/[projectId]/page": "app/project/[projectId]/page.js",
+  "/project/[projectId]/task-tracker/new-task/page": "app/project/[projectId]/task-tracker/new-task/page.js",
+  "/page": "app/page.js",
+  "/project/[projectId]/task-tracker/page": "app/project/[projectId]/task-tracker/page.js"
+}

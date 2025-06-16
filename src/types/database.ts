@@ -6,8 +6,7 @@ export interface Project {
   owner_id: string;
   owner?: {
     id: string;
-    name: string;
+    full_name?: string;
+    avatar_url?: string;
   };
 }
-
-

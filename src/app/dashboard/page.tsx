@@ -34,7 +34,7 @@ export default async function Dashboard() {
 
   return (
     <DashboardPage
-      currentUser={userProfile}
+      currentUser={userProfile!} // ini masih error fetch
       dashboardStats={stats}
       recentProjects={recentProjects}
       recentTasks={recentTasks}

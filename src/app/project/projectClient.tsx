@@ -1,23 +1,32 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import Link from "next/link"
-import { projectService } from "@/services/projectService"
-import type { Project } from "@/types/database"
-import { ArrowUpDown, PlusIcon, Search, FolderOpen, Calendar, Sparkles, Grid3X3, List } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import type { Session } from "@supabase/auth-helpers-nextjs"
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { projectService } from "@/services/projectService";
+import type { Project } from "@/types/database";
+import {
+  ArrowUpDown,
+  PlusIcon,
+  Search,
+  FolderOpen,
+  Calendar,
+  Sparkles,
+  Grid3X3,
+  List,
+} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import type { Session } from "@supabase/auth-helpers-nextjs";
 
 function getInitials(name: string) {
   return name
     .split(" ")
     .map((part) => part[0])
     .join("")
-    .toUpperCase()
+    .toUpperCase();
 }
 
 function formatDate(dateStr: string) {
@@ -25,36 +34,36 @@ function formatDate(dateStr: string) {
     year: "numeric",
     month: "short",
     day: "numeric",
-  })
+  });
 }
 
 export default function ProjectPageClient({ session }: { session: Session }) {
-  const [projects, setProjects] = useState<Project[]>([])
-  const [loading, setLoading] = useState(true)
-  const [search, setSearch] = useState("")
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc")
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
-  const user = session.user
+  const user = session.user;
 
   useEffect(() => {
     const fetchProjects = async () => {
-      setLoading(true)
-      const data = await projectService.getProjectsByUser(user.id)
-      setProjects(data)
-      setLoading(false)
-    }
+      setLoading(true);
+      const data = await projectService.getProjectsByUser(user.id);
+      setProjects(data);
+      setLoading(false);
+    };
 
-    fetchProjects()
-  }, [user.id])
+    fetchProjects();
+  }, [user.id]);
 
   const filtered = projects
     .filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
     .sort((a, b) => {
-      const dateA = new Date(a.created_at).getTime()
-      const dateB = new Date(b.created_at).getTime()
-      return sortOrder === "asc" ? dateA - dateB : dateB - dateA
-    })
+      const dateA = new Date(a.created_at).getTime();
+      const dateB = new Date(b.created_at).getTime();
+      return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+    });
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -64,10 +73,10 @@ export default function ProjectPageClient({ session }: { session: Session }) {
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="space-y-2">
               <div className="flex items-center gap-3">
-
                 <div>
-                  <h1 className="text-3xl font-bold text-slate-900">Project Overview</h1>
-                  
+                  <h1 className="text-3xl font-bold text-slate-900">
+                    Project Overview
+                  </h1>
                 </div>
               </div>
 
@@ -75,7 +84,9 @@ export default function ProjectPageClient({ session }: { session: Session }) {
               <div className="flex items-center gap-6 mt-4">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  <span className="text-sm text-slate-700 font-medium">{projects.length} Total Projects</span>
+                  <span className="text-sm text-slate-700 font-medium">
+                    {projects.length} Total Projects
+                  </span>
                 </div>
               </div>
             </div>
@@ -140,10 +151,16 @@ export default function ProjectPageClient({ session }: { session: Session }) {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))}
+                  onClick={() =>
+                    setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))
+                  }
                   className="h-11 px-4 border-slate-200 text-white hover:bg-slate-400"
                 >
-                  <ArrowUpDown className={`h-4 w-4 mr-2 transition ${sortOrder === "asc" ? "rotate-180" : ""}`} />
+                  <ArrowUpDown
+                    className={`h-4 w-4 mr-2 transition ${
+                      sortOrder === "asc" ? "rotate-180" : ""
+                    }`}
+                  />
                   {sortOrder === "asc" ? "Oldest First" : "Newest First"}
                 </Button>
               </div>
@@ -155,12 +172,18 @@ export default function ProjectPageClient({ session }: { session: Session }) {
                 <p className="text-sm text-slate-600">
                   {filtered.length === 0 ? (
                     <>
-                      No projects found matching <span className="font-medium text-slate-900">"{search}"</span>
+                      No projects found matching{" "}
+                      <span className="font-medium text-slate-900">
+                        "{search}"
+                      </span>
                     </>
                   ) : (
                     <>
-                      Found {filtered.length} project{filtered.length !== 1 ? "s" : ""} matching{" "}
-                      <span className="font-medium text-slate-900">"{search}"</span>
+                      Found {filtered.length} project
+                      {filtered.length !== 1 ? "s" : ""} matching{" "}
+                      <span className="font-medium text-slate-900">
+                        "{search}"
+                      </span>
                     </>
                   )}
                 </p>
@@ -196,7 +219,11 @@ export default function ProjectPageClient({ session }: { session: Session }) {
           /* Grid View */
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map((project) => (
-              <Link href={`/project/${project.id}`} key={project.id} className="group">
+              <Link
+                href={`/project/${project.id}`}
+                key={project.id}
+                className="group"
+              >
                 <Card className="h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border-0 shadow-lg bg-white/80 backdrop-blur-sm group-hover:bg-white">
                   <CardHeader className="pb-4">
                     <div className="flex items-start justify-between">
@@ -205,7 +232,10 @@ export default function ProjectPageClient({ session }: { session: Session }) {
                           {project.name}
                         </CardTitle>
                         <div className="flex items-center gap-2 mt-2">
-                          <Badge variant="outline" className="border-blue-200 text-blue-700 bg-blue-50">
+                          <Badge
+                            variant="outline"
+                            className="border-blue-200 text-blue-700 bg-blue-50"
+                          >
                             <Sparkles className="h-3 w-3 mr-1" />
                             Active
                           </Badge>
@@ -223,10 +253,12 @@ export default function ProjectPageClient({ session }: { session: Session }) {
                         <div className="flex items-center gap-2">
                           <Avatar className="h-7 w-7 border-2 border-white shadow-sm">
                             <AvatarFallback className="bg-gradient-to-br from-blue-100 to-indigo-100 text-blue-700 text-xs font-semibold">
-                              {getInitials(project.owner?.name || "U")}
+                              {getInitials(project.owner?.full_name || "U")}
                             </AvatarFallback>
                           </Avatar>
-                          <span className="text-slate-700 font-medium">{project.owner?.full_name || "Unknown"}</span>
+                          <span className="text-slate-700 font-medium">
+                            {project.owner?.full_name || "Unknown"}
+                          </span>
                         </div>
                       </div>
 
@@ -244,7 +276,11 @@ export default function ProjectPageClient({ session }: { session: Session }) {
           /* List View */
           <div className="flex flex-col gap-6">
             {filtered.map((project) => (
-              <Link href={`/project/${project.id}`} key={project.id} className="group">
+              <Link
+                href={`/project/${project.id}`}
+                key={project.id}
+                className="group"
+              >
                 <Card className="transition-all duration-300 hover:shadow-lg border-0 shadow-md bg-white/80 backdrop-blur-sm group-hover:bg-white">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
@@ -265,10 +301,12 @@ export default function ProjectPageClient({ session }: { session: Session }) {
                             <div className="flex items-center gap-2">
                               <Avatar className="h-5 w-5">
                                 <AvatarFallback className="bg-gradient-to-br from-blue-100 to-indigo-100 text-blue-700 text-xs">
-                                  {getInitials(project.owner?.name || "U")}
+                                  {getInitials(project.owner?.full_name || "U")}
                                 </AvatarFallback>
                               </Avatar>
-                              <span className="text-sm text-slate-600">{project.owner?.full_name || "Unknown"}</span>
+                              <span className="text-sm text-slate-600">
+                                {project.owner?.full_name || "Unknown"}
+                              </span>
                             </div>
 
                             <div className="flex items-center gap-1 text-xs text-slate-500">
@@ -280,7 +318,10 @@ export default function ProjectPageClient({ session }: { session: Session }) {
                       </div>
 
                       <div className="flex items-center gap-3">
-                        <Badge variant="outline" className="border-blue-200 text-blue-700 bg-blue-50">
+                        <Badge
+                          variant="outline"
+                          className="border-blue-200 text-blue-700 bg-blue-50"
+                        >
                           Active
                         </Badge>
                       </div>
@@ -293,9 +334,8 @@ export default function ProjectPageClient({ session }: { session: Session }) {
         )}
       </div>
     </div>
-  )
+  );
 }
-
 
 // "use client";
 
