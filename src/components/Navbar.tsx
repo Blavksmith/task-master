@@ -66,16 +66,16 @@ export default function Navbar({ session }: { session: Session | null }) {
               Features
             </Link>
             <Link
-              href="#solutions"
+              href="#advantages"
               className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
             >
-              Solutions
+              Advantages
             </Link>
             <Link
-              href="#resources"
+              href="#vision"
               className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
             >
-              Resources
+              Our Vision
             </Link>
           </nav>
 
@@ -132,49 +132,29 @@ export default function Navbar({ session }: { session: Session | null }) {
           <Link
             href="/project"
             className={`text-sm font-medium transition-colors ${
-              pathname.startsWith("/project")
+              pathname === "/project"
                 ? "text-blue-600 font-semibold"
                 : "text-gray-700 hover:text-gray-900"
             }`}
           >
-            Projects
+            Overview
           </Link>
 
           <Link
-            href="/task-tracker"
+            href="/project/new"
             className={`text-sm font-medium transition-colors ${
-              pathname.startsWith("/task-tracker")
+              pathname.startsWith("/project/new")
                 ? "text-blue-600 font-semibold"
                 : "text-gray-700 hover:text-gray-900"
             }`}
           >
-            Tasks
-          </Link>
-
-          <Link
-            href="/settings/roles"
-            className={`text-sm font-medium transition-colors ${
-              pathname.startsWith("/settings")
-                ? "text-blue-600 font-semibold"
-                : "text-gray-700 hover:text-gray-900"
-            }`}
-          >
-            Settings
+            Add Project
           </Link>
         </nav>
 
         <div className="flex items-center gap-3">
-          {/* Quick Action Button */}
-          <Link href="/project/new">
-            <Button
-              size="sm"
-              className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
-            >
-              New Project
-            </Button>
-          </Link>
 
-          {/* User Dropdown */}
+         
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -221,7 +201,7 @@ export default function Navbar({ session }: { session: Session | null }) {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {/* Mobile menu button */}
+          {/* mobile menu button */}
           <div className="md:hidden">
             <Button variant="ghost" size="sm" className="text-gray-700">
               <Menu className="h-5 w-5" />

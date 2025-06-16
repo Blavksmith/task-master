@@ -32,9 +32,9 @@ export default function DashboardPage({
     <div className="min-h-screen bg-gray-50">
       {/* Nav */}
 
-      {/* Dashboard Content */}
-      <div className="container mx-auto px-4 py-8">
-        {/* Welcome Section */}
+      {/* dashboard Content */}
+      <div className="container mx-auto px-14 py-8">
+        {/* welcome section */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
@@ -148,7 +148,7 @@ export default function DashboardPage({
                           {project.description}
                         </p>
                       </div>
-                      <Badge variant="outline" className="ml-4">
+                      <Badge variant="outline" className="ml-4 bg-gray-100 hover:bg-gray-200 text-gray-600 border-0 cursor-pointer">
                         {project.taskCount} tasks
                       </Badge>
                     </div>
@@ -209,7 +209,7 @@ export default function DashboardPage({
             {/* Quick Stats */}
             <Card className="border-0 shadow-sm">
               <CardHeader className="pb-3">
-                <CardTitle className="text-lg flex items-center gap-2">
+                <CardTitle className="text-lg flex items-center gap-2 text-slate-800">
                   <TrendingUp className="h-5 w-5 text-indigo-600" />
                   This Week
                 </CardTitle>
@@ -252,15 +252,10 @@ export default function DashboardPage({
             <Card className="border-0 shadow-sm">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg flex items-center gap-2">
+                  <CardTitle className="text-lg flex items-center gap-2 text-slate-900">
                     <Calendar className="h-5 w-5 text-indigo-600" />
                     Recent Tasks
                   </CardTitle>
-                  <Link href="/task-tracker">
-                    <Button variant="ghost" size="sm" className="text-xs">
-                      View All
-                    </Button>
-                  </Link>
                 </div>
               </CardHeader>
               <CardContent>
@@ -278,7 +273,7 @@ export default function DashboardPage({
                           <Badge
                             className={`text-xs ${getPriorityColor(
                               task.priority
-                            )}`}
+                            )} bg-gray-100 hover:bg-gray-200 text-gray-600 border-0 cursor-pointer`}
                           >
                             {task.priority}
                           </Badge>
