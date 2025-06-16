@@ -102,7 +102,7 @@ export default function RegisterPage() {
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     placeholder="John"
-                    className="h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
+                    className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                     required
                   />
                 </div>
@@ -121,7 +121,7 @@ export default function RegisterPage() {
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     placeholder="Doe"
-                    className="h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
+                    className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                     required
                   />
                 </div>
@@ -138,7 +138,7 @@ export default function RegisterPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="john@example.com"
-                  className="h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
+                  className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                   required
                 />
               </div>
@@ -154,7 +154,7 @@ export default function RegisterPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Create a password"
-                  className="h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
+                  className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                   required
                 />
               </div>
@@ -173,7 +173,7 @@ export default function RegisterPage() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm your password"
-                  className="h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
+                  className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                   required
                 />
               </div>
@@ -188,14 +188,14 @@ export default function RegisterPage() {
                   I agree to the{" "}
                   <Link
                     href="#"
-                    className="text-indigo-600 hover:text-indigo-500"
+                    className="text-blue-600 hover:text-blue-500"
                   >
                     Terms of Service
                   </Link>{" "}
                   and{" "}
                   <Link
                     href="#"
-                    className="text-indigo-600 hover:text-indigo-500"
+                    className="text-blue-600 hover:text-blue-500"
                   >
                     Privacy Policy
                   </Link>
@@ -208,7 +208,7 @@ export default function RegisterPage() {
               {/* Create Account Button */}
               <Button
                 type="submit"
-                className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white font-medium"
+                className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium"
               >
                 Create account
               </Button>
@@ -218,7 +218,7 @@ export default function RegisterPage() {
                 <span className="text-gray-600">Already have an account? </span>
                 <Link
                   href="/auth/login"
-                  className="text-indigo-600 hover:text-indigo-500 font-medium"
+                  className="text-blue-600 hover:text-blue-500 font-medium"
                 >
                   Sign in
                 </Link>

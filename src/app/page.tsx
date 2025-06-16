@@ -1,10 +1,12 @@
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import FeatureCard from "../components/FeatureCard"
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
-import { redirect } from "next/navigation"
-import { cookies } from "next/headers"
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import FeatureCard from "../components/FeatureCard";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import Image from "next/image";
+import Link from "next/link";
 
 export const features = [
   {
@@ -32,94 +34,84 @@ export const features = [
     title: "Custom Roles & Permissions",
     paragraph:
       "Define custom roles and set granular permissions to ensure the right people have access to the right features.",
-    firstPath: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 3a4 4 0 1 0 0.001 8.001A4 4 0 0 0 9 3",
+    firstPath:
+      "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 3a4 4 0 1 0 0.001 8.001A4 4 0 0 0 9 3",
     secondPath: "M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75",
     circlePath: "",
   },
-]
+];
 
 export default async function Home() {
-  const supabase = createServerComponentClient({ cookies })
+  const supabase = createServerComponentClient({ cookies });
 
   const {
     data: { session },
-  } = await supabase.auth.getSession()
+  } = await supabase.auth.getSession();
 
   // 🔁 Jika sudah login, redirect ke dashboard
   if (session) {
-    redirect("/dashboard")
+    redirect("/dashboard");
   }
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
       {/* Hero Section */}
       <section className="container mx-auto px-14 py-28 min-h-screen">
-        <div className="grid md:grid-cols-2 gap-8 items-center">
+        <div className="grid md:grid-cols-2 gap-8 items-center px-10">
+          <div className="flex items-center justify-center">
+            <div className="w-full h-[400px] rounded-lg flex items-center justify-center">
+              <Image
+                src="/assets/hero.png"
+                alt="Hero illustration"
+                className="h-full object-contain"
+                width={600}
+                height={400}
+              />
+            </div>
+          </div>
           {/* Left Column */}
           <div className="space-y-8">
             <div className="space-y-6">
-
               <h1 className="text-5xl font-bold leading-tight text-gray-900">
                 Manage tasks
                 <br />
                 with{" "}
-                <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">
                   clarity
                 </span>
                 <br />
                 and confidence
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed">
-                Transform your team's productivity with our intelligent task management platform. Streamline workflows,
-                track progress, and achieve your goals faster than ever.
+                Transform your team's productivity with our intelligent task
+                management platform. Streamline workflows, track progress, 
+                and
+                achieve your goals faster than ever.
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="bg-indigo-600 hover:bg-indigo-700 cursor-pointer text-white px-8 py-3">
-                Start for free
-              </Button>
-            </div>
-
-
-          </div>
-
-          {/* Right Column - Image Placeholder */}
-          <div className="flex items-center justify-center">
-            <div className="w-full h-[400px] bg-gray-100 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center">
-              <div className="text-center text-gray-500">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="48"
-                  height="48"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="mx-auto mb-4"
-                >
-                  <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-                  <circle cx="9" cy="9" r="2" />
-                  <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-                </svg>
-                <p className="text-sm">Image placeholder</p>
-                <p className="text-xs text-gray-400">Replace with your hero image</p>
-              </div>
+              <Link href="/auth/register">
+                <Button className="bg-blue-600 hover:bg-blue-700 cursor-pointer text-white px-8 py-3">
+                  Start Now
+                </Button>
+              </Link>
             </div>
           </div>
+
+          {/* right: image */}
         </div>
       </section>
 
-      {/* Feature section */}
-      <section className="bg-gray-50 text-gray-900 py-16 space-y-16">
+      {/* features */}
+      <section className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-gray-900 py-16 space-y-16">
         <div className="container mx-auto px-14">
           {/* Feature header */}
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-4xl font-bold text-gray-900">Features</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Discover the powerful features that make task management a breeze and boost your team's productivity.
+              Discover the powerful features that make task management a breeze
+              and boost your team's productivity.
             </p>
           </div>
 
@@ -140,20 +132,22 @@ export default async function Home() {
           </div>
 
           <div className="flex justify-center mt-12">
-            <Button className="bg-indigo-600 hover:bg-indigo-700 cursor-pointer text-white px-8 py-3">
+            <Button className="bg-blue-600 hover:bg-blue-700 cursor-pointer text-white px-8 py-3">
               Get Started Now
             </Button>
           </div>
         </div>
       </section>
 
-
       <section className="bg-white py-20">
         <div className="container mx-auto px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Why Choose TaskMaster?</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Why Choose TaskMaster?
+            </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Discover what makes TaskMaster the preferred choice for thousands of teams worldwide
+              Discover what makes TaskMaster the preferred choice for thousands
+              of teams worldwide
             </p>
           </div>
 
@@ -178,10 +172,13 @@ export default async function Home() {
                   <path d="M2 12l10 5 10-5" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Easy to Use</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                Easy to Use
+              </h3>
               <p className="text-gray-600 leading-relaxed">
-                Intuitive interface that your team can master in minutes, not hours. No complex training required - just
-                sign up and start organizing your tasks immediately.
+                Intuitive interface that your team can master in minutes, not
+                hours. No complex training required - just sign up and start
+                organizing your tasks immediately.
               </p>
             </Card>
 
@@ -205,13 +202,15 @@ export default async function Home() {
                   <path d="M2 12l10 5 10-5" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Powerful Features</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                Powerful Features
+              </h3>
               <p className="text-gray-600 leading-relaxed">
-                From task prioritization to real-time collaboration, we've packed everything you need into one
-                comprehensive platform without the complexity.
+                From task prioritization to real-time collaboration, we've
+                packed everything you need into one comprehensive platform
+                without the complexity.
               </p>
             </Card>
-
 
             {/* 24/7 Support */}
             <Card className="border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 text-center p-6">
@@ -231,10 +230,13 @@ export default async function Home() {
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">24/7 Support</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                24/7 Support
+              </h3>
               <p className="text-gray-600 leading-relaxed">
-                Our dedicated support team is always ready to help. Get quick responses to your questions and
-                personalized assistance when you need it most.
+                Our dedicated support team is always ready to help. Get quick
+                responses to your questions and personalized assistance when you
+                need it most.
               </p>
             </Card>
 
@@ -257,31 +259,30 @@ export default async function Home() {
                   <path d="m19 9-5 5-4-4-3 3" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Proven Results</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                Proven Results
+              </h3>
               <p className="text-gray-600 leading-relaxed">
-                Join 10,000+ teams who have increased their productivity by 40% on average. Real results from real teams
-                using TaskMaster daily.
+                Join 10,000+ teams who have increased their productivity by 40%
+                on average. Real results from real teams using TaskMaster daily.
               </p>
             </Card>
-          </div>
-
-          <div className="text-center mt-12">
-            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3">
-              Start Your Free Trial Today
-            </Button>
           </div>
         </div>
       </section>
 
       {/* Vision Section */}
-      <section className="bg-gradient-to-br from-indigo-50 to-purple-50 py-20">
+      <section className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 py-20">
         <div className="container mx-auto px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">Our Vision</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-6">
+              Our Vision
+            </h2>
             <p className="text-xl text-gray-600 mb-12 leading-relaxed">
-              We envision a world where teams can focus on what truly matters - creating amazing products and delivering
-              exceptional results. TaskMaster is built to eliminate the chaos of task management and bring clarity to
-              every project.
+              We envision a world where teams can focus on what truly matters -
+              creating amazing products and delivering exceptional results.
+              TaskMaster is built to eliminate the chaos of task management and
+              bring clarity to every project.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
@@ -303,9 +304,12 @@ export default async function Home() {
                     <path d="M22 12h-7" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">Simplicity First</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  Simplicity First
+                </h3>
                 <p className="text-gray-600">
-                  Complex problems deserve simple solutions. We believe in intuitive design that gets out of your way.
+                  Complex problems deserve simple solutions. We believe in
+                  intuitive design that gets out of your way.
                 </p>
               </div>
 
@@ -329,9 +333,12 @@ export default async function Home() {
                     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">Team Collaboration</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  Team Collaboration
+                </h3>
                 <p className="text-gray-600">
-                  Great things happen when teams work together seamlessly. We're building the future of collaboration.
+                  Great things happen when teams work together seamlessly. We're
+                  building the future of collaboration.
                 </p>
               </div>
 
@@ -354,16 +361,20 @@ export default async function Home() {
                     <path d="M2 12l10 5 10-5" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">Continuous Innovation</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  Continuous Innovation
+                </h3>
                 <p className="text-gray-600">
-                  We're constantly evolving, learning from our users, and pushing the boundaries of what's possible.
+                  We're constantly evolving, learning from our users, and
+                  pushing the boundaries of what's possible.
                 </p>
               </div>
             </div>
 
             <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
               <blockquote className="text-2xl font-medium text-gray-900 mb-4">
-                "TaskMaster has transformed how our team works. We've never been more organized and productive."
+                "TaskMaster has transformed how our team works. We've never been
+                more organized and productive."
               </blockquote>
               <div className="flex items-center justify-center gap-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full"></div>
@@ -376,12 +387,9 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
     </div>
-  )
+  );
 }
-
-
 
 // import Link from "next/link";
 // import { Button } from "@/components/ui/button";
@@ -436,7 +444,6 @@ export default async function Home() {
 //   if (session) {
 //     redirect("/dashboard");
 //   }
-
 
 //   return (
 //     <div className="min-h-screen bg-black text-white">

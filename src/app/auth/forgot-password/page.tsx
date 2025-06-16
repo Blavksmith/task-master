@@ -67,7 +67,7 @@ export default function ForgotPasswordPage() {
                   id="email"
                   type="email"
                   placeholder="Enter your email"
-                  className="h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
+                  className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -77,7 +77,7 @@ export default function ForgotPasswordPage() {
               {/* Send Reset Link Button */}
               <Button
                 type="submit"
-                className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white font-medium"
+                className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium"
                 disabled={loading}
               >
                 {loading ? "Sending..." : "Send Reset Link"}
@@ -87,7 +87,7 @@ export default function ForgotPasswordPage() {
               <div className="text-center pt-4">
                 <Link
                   href="/auth/login"
-                  className="inline-flex items-center text-sm text-indigo-600 hover:text-indigo-500"
+                  className="inline-flex items-center text-sm text-blue-600 hover:text-blue-500"
                 >
                   <ArrowLeft className="mr-2 h-4 w-4" />
                   Back to login

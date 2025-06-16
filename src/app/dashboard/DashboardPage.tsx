@@ -133,7 +133,7 @@ export default function DashboardPage({
               {recentProjects.map((project) => (
                 <Card
                   key={project.id}
-                  className="border-0 shadow-sm hover:shadow-md transition-shadow"
+                  className="border-0 shadow-sm hover:shadow-md transition-shadow bg-white"
                 >
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between mb-4">
@@ -207,7 +207,7 @@ export default function DashboardPage({
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Quick Stats */}
-            <Card className="border-0 shadow-sm">
+            <Card className="border-0 shadow-sm bg-white">
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg flex items-center gap-2 text-slate-800">
                   <TrendingUp className="h-5 w-5 text-indigo-600" />
@@ -249,7 +249,7 @@ export default function DashboardPage({
             </Card>
 
             {/* Recent Tasks */}
-            <Card className="border-0 shadow-sm">
+            <Card className="border-0 shadow-sm bg-white">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-lg flex items-center gap-2 text-slate-900">

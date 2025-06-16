@@ -93,7 +93,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
+                  className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                   required
                 />
               </div>
@@ -109,7 +109,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
-                  className="h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
+                  className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                   required
                 />
               </div>
@@ -122,7 +122,7 @@ export default function LoginPage() {
                     Remember me
                   </Label>
                 </div>
-                <Link href="/auth/forgot-password" className="text-sm text-indigo-600 hover:text-indigo-500">
+                <Link href="/auth/forgot-password" className="text-sm text-blue-600 hover:text-blue-500">
                   Forgot password?
                 </Link>
               </div>
@@ -134,7 +134,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white font-medium"
+                className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium"
               >
                 {isLoading ? "Signing in..." : "Sign in"}
               </Button>
@@ -142,7 +142,7 @@ export default function LoginPage() {
               {/* Sign Up Link */}
               <div className="text-center pt-4">
                 <span className="text-gray-600">Don't have an account? </span>
-                <Link href="/auth/register" className="text-indigo-600 hover:text-indigo-500 font-medium">
+                <Link href="/auth/register" className="text-blue-600 hover:text-blue-500 font-medium">
                   Sign up
                 </Link>
               </div>

@@ -15,22 +15,23 @@ type Task = {
   project_id: string;
 };
 
-export default function TaskTracker({ 
-  params, 
-  initialTasks 
-}: { 
+export default function TaskTracker({
+  params,
+  initialTasks,
+}: {
   params: { projectId: string };
   initialTasks: Task[];
 }) {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const [isPending, startTransition] = useTransition();
 
-
   const updateTaskStatus = async (taskId: string, newStatus: string) => {
     // Optimistic update
-    setTasks(prev => prev.map(task => 
-      task.id === taskId ? { ...task, status: newStatus } : task
-    ));
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === taskId ? { ...task, status: newStatus } : task
+      )
+    );
 
     try {
       const { error } = await supabase
@@ -41,9 +42,11 @@ export default function TaskTracker({
       if (error) {
         console.error("Error updating task:", error);
         // Revert optimistic update on error
-        setTasks(prev => prev.map(task => 
-          task.id === taskId ? { ...task, status: task.status } : task
-        ));
+        setTasks((prev) =>
+          prev.map((task) =>
+            task.id === taskId ? { ...task, status: task.status } : task
+          )
+        );
       }
     } catch (error) {
       console.error("Error updating task:", error);
@@ -52,13 +55,10 @@ export default function TaskTracker({
 
   const deleteTask = async (taskId: string) => {
     // Optimistic update
-    setTasks(prev => prev.filter(task => task.id !== taskId));
+    setTasks((prev) => prev.filter((task) => task.id !== taskId));
 
     try {
-      const { error } = await supabase
-        .from("tasks")
-        .delete()
-        .eq("id", taskId);
+      const { error } = await supabase.from("tasks").delete().eq("id", taskId);
 
       if (error) {
         console.error("Error deleting task:", error);
@@ -82,7 +82,8 @@ export default function TaskTracker({
   };
 
   const todo = tasks?.filter((task) => task.status === "todo") || [];
-  const inProgress = tasks?.filter((task) => task.status === "in_progress") || [];
+  const inProgress =
+    tasks?.filter((task) => task.status === "in_progress") || [];
   const done = tasks?.filter((task) => task.status === "done") || [];
 
   return (
@@ -105,25 +106,25 @@ export default function TaskTracker({
           {/* Kanban Board */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Todo */}
-            <TaskCard 
-              title="Todo" 
-              tasks={todo} 
+            <TaskCard
+              title="Todo"
+              tasks={todo}
               onTaskAction={handleTaskAction}
               isPending={isPending}
             />
 
             {/* In Progress */}
-            <TaskCard 
-              title="In-Progress" 
-              tasks={inProgress} 
+            <TaskCard
+              title="In-Progress"
+              tasks={inProgress}
               onTaskAction={handleTaskAction}
               isPending={isPending}
             />
 
             {/* Done */}
-            <TaskCard 
-              title="Done" 
-              tasks={done} 
+            <TaskCard
+              title="Done"
+              tasks={done}
               onTaskAction={handleTaskAction}
               isPending={isPending}
             />
