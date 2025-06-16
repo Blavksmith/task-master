@@ -348,8 +348,8 @@ export default async function Home() {
               <div className="flex items-center justify-center gap-4">
                 
                 <div className="text-left">
-                  <p className="font-semibold text-gray-900">Jef Bejos</p>
-                  
+                  <p className="font-semibold text-gray-900">Elon Musk</p>
+                  <p className="text-gray-600">CEO, Tesla</p>
                 </div>
               </div>
             </div>
