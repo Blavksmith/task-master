@@ -346,10 +346,10 @@ export default async function Home() {
                 more organized and productive."
               </blockquote>
               <div className="flex items-center justify-center gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full"></div>
+                
                 <div className="text-left">
-                  <p className="font-semibold text-gray-900">Sarah Johnson</p>
-                  <p className="text-gray-600">CEO, TechStart Inc.</p>
+                  <p className="font-semibold text-gray-900">Jef Bejos</p>
+                  
                 </div>
               </div>
             </div>
