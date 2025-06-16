@@ -93,7 +93,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                  className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500 text-slate-800"
                   required
                 />
               </div>
@@ -109,7 +109,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
-                  className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                  className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500 text-slate-800"
                   required
                 />
               </div>
@@ -117,8 +117,8 @@ export default function LoginPage() {
               {/* Remember Me and Forgot Password */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <Checkbox id="remember" />
-                  <Label htmlFor="remember" className="text-sm text-gray-600">
+                  <Checkbox id="remember" className="mt-1 data-[state=checked]:text-black" />
+                  <Label htmlFor="remember" className="text-sm text-slate-800">
                     Remember me
                   </Label>
                 </div>

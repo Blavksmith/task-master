@@ -92,7 +92,7 @@ export default function RegisterPage() {
                 <div className="space-y-2">
                   <Label
                     htmlFor="firstName"
-                    className="text-gray-700 font-medium"
+                    className="text-slate-800 font-medium"
                   >
                     First name
                   </Label>
@@ -101,8 +101,8 @@ export default function RegisterPage() {
                     type="text"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
-                    placeholder="John"
-                    className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                    placeholder="Daud"
+                    className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500 text-slate-900"
                     required
                   />
                 </div>
@@ -120,8 +120,8 @@ export default function RegisterPage() {
                     type="text"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
-                    placeholder="Doe"
-                    className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                    placeholder="Paris"
+                    className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500 text-slate-800"
                     required
                   />
                 </div>
@@ -137,8 +137,8 @@ export default function RegisterPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="john@example.com"
-                  className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                  placeholder="daud@example.com"
+                  className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500 text-slate-800"
                   required
                 />
               </div>
@@ -154,7 +154,7 @@ export default function RegisterPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Create a password"
-                  className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                  className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500 text-slate-800"
                   required
                 />
               </div>
@@ -173,30 +173,28 @@ export default function RegisterPage() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm your password"
-                  className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                  className="h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500 text-slate-800"
                   required
                 />
               </div>
 
               {/* Terms and Conditions */}
               <div className="flex items-start space-x-2 pt-2">
-                <Checkbox id="terms" className="mt-1" />
+                <Checkbox
+                  id="terms"
+                  className="mt-1 data-[state=checked]:text-slate-800 border"
+                />
+
                 <Label
                   htmlFor="terms"
                   className="text-sm text-gray-600 leading-5"
                 >
                   I agree to the{" "}
-                  <Link
-                    href="#"
-                    className="text-blue-600 hover:text-blue-500"
-                  >
+                  <Link href="#" className="text-blue-600 hover:text-blue-500">
                     Terms of Service
                   </Link>{" "}
                   and{" "}
-                  <Link
-                    href="#"
-                    className="text-blue-600 hover:text-blue-500"
-                  >
+                  <Link href="#" className="text-blue-600 hover:text-blue-500">
                     Privacy Policy
                   </Link>
                 </Label>
