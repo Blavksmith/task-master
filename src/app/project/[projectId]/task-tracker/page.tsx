@@ -1,12 +1,12 @@
 import React from "react";
 import { createClient } from "@/lib/supabase/server";
-import TaskTracker from "./TaskTrackerClient"; // Import the client component we created above
+import TaskTracker from "./TaskTrackerClient";
 
-async function TaskTrackerServer({
-  params,
-}: {
+type Props = {
   params: { projectId: string };
-}) {
+};
+
+export default async function Page({ params }: Props) {
   const supabase = createClient();
   const { data: tasks } = await supabase
     .from("tasks")
@@ -15,5 +15,3 @@ async function TaskTrackerServer({
 
   return <TaskTracker params={params} initialTasks={tasks || []} />;
 }
-
-export default TaskTrackerServer;
