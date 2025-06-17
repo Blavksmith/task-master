@@ -7,8 +7,7 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
-import {features} from "@/lib/constant";
-
+import { features } from "@/lib/constant";
 
 export default async function Home() {
   const supabase = createServerComponentClient({ cookies });
@@ -53,8 +52,7 @@ export default async function Home() {
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed">
                 Transform your team's productivity with our intelligent task
-                management platform. Streamline workflows, track progress, 
-                and
+                management platform. Streamline workflows, track progress, and
                 achieve your goals faster than ever.
               </p>
             </div>
@@ -196,16 +194,17 @@ export default async function Home() {
                   strokeLinejoin="round"
                   className="text-white"
                 >
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  <path d="M3 10h18M3 6h18M3 14h18M3 18h18" />{" "}
+                  {/* Ikon lebih clean */}
                 </svg>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                24/7 Support
+                Clean Design and Interface
               </h3>
               <p className="text-gray-600 leading-relaxed">
-                Our dedicated support team is always ready to help. Get quick
-                responses to your questions and personalized assistance when you
-                need it most.
+                Crafted with simplicity in mind, our interface ensures a clean
+                and intuitive experience, allowing you to focus on what truly
+                matters without distractions.
               </p>
             </Card>
 
@@ -303,11 +302,11 @@ export default async function Home() {
                   </svg>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  Team Collaboration
+                  Increase Productivity
                 </h3>
                 <p className="text-gray-600">
-                  Great things happen when teams work together seamlessly. We're
-                  building the future of collaboration.
+                  Great things happen when work seamlessly. We're building the
+                  future of productivity.
                 </p>
               </div>
 
@@ -346,7 +345,6 @@ export default async function Home() {
                 more organized and productive."
               </blockquote>
               <div className="flex items-center justify-center gap-4">
-                
                 <div className="text-left">
                   <p className="font-semibold text-gray-900">Elon Musk</p>
                   <p className="text-gray-600">CEO, Tesla</p>

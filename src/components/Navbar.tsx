@@ -16,6 +16,7 @@ import {
 import { User, Settings, LogOut, Menu } from "lucide-react";
 import type { Session } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 function getInitials(full_name: string) {
   return full_name
@@ -25,10 +26,34 @@ function getInitials(full_name: string) {
     .toUpperCase();
 }
 
+type Profile = {
+  full_name: string;
+  avatar_url: string | null;
+};
+
 export default function Navbar({ session }: { session: Session | null }) {
   const pathname = usePathname();
   const router = useRouter();
   const supabase = createClientComponentClient();
+
+  const [profile, setProfile] = useState<Profile | null>(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (session?.user?.id) {
+        const { data, error } = await supabase
+          .from("users")
+          .select("full_name, avatar_url")
+          .eq("id", session.user.id)
+          .single();
+
+        if (data) setProfile(data);
+        else console.error("Error fetching profile:", error);
+      }
+    };
+
+    fetchProfile();
+  }, [session]);
 
   const hiddenPaths = [
     "/auth/login",
@@ -153,8 +178,6 @@ export default function Navbar({ session }: { session: Session | null }) {
         </nav>
 
         <div className="flex items-center gap-3">
-
-         
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -162,14 +185,14 @@ export default function Navbar({ session }: { session: Session | null }) {
                 className="relative h-10 w-10 rounded-full hover:bg-gray-100"
               >
                 <Avatar className="h-8 w-8">
-                  {userMeta?.avatar_url ? (
+                  {profile?.avatar_url ? (
                     <AvatarImage
-                      src={userMeta.avatar_url || "/placeholder.svg"}
-                      alt={userMeta.full_name || "User"}
+                      src={profile.avatar_url}
+                      alt={profile.full_name}
                     />
                   ) : (
                     <AvatarFallback className="bg-blue-100 text-blue-600 text-sm font-medium">
-                      {getInitials(userMeta?.full_name || "U")}
+                      {getInitials(profile?.full_name || "U")}
                     </AvatarFallback>
                   )}
                 </Avatar>

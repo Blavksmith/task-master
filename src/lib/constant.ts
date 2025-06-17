@@ -21,13 +21,11 @@ export const features = [
     firstPath: "M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9",
     secondPath: "M10.3 21a1.94 1.94 0 0 0 3.4 0",
   },
-  {
-    title: "Custom Roles & Permissions",
-    paragraph:
-      "Define custom roles and set granular permissions to ensure the right people have access to the right features.",
-    firstPath:
-      "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 3a4 4 0 1 0 0.001 8.001A4 4 0 0 0 9 3",
-    secondPath: "M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75",
-    circlePath: "",
-  },
+{
+  title: "Project Management",
+  paragraph: "Organize, track, and collaborate on projects effortlessly with a powerful management system designed for teams of all sizes.",
+  firstPath: "M3 10h18M3 6h18M3 14h18M3 18h18",
+  secondPath: "M5 3v18M19 3v18",
+  circlePath: "M12 12a4 4 0 1 1 0-8"
+}
 ];
